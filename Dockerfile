@@ -1,9 +1,14 @@
+# Use ruby:3.3.6 as the base image
 FROM ruby:3.3.6
 
+# Metadata about this image
 LABEL Version="1.0"
 LABEL Name="Examinis Student"
 LABEL Maintainer="Examinis"
 LABEL Description="Docker image for Rails development using a PostgreSQL database"
+
+# Environment variables
+ENV RAILS_ENV=development
 
 # Install dependencies
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs yarn && apt-get clean
