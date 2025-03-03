@@ -31,3 +31,17 @@ The Examinis Student module is a Ruby on Rails application designed to manage th
     ```
 
 6. Access the application in your browser at: [http://0.0.0.0:3000](http://0.0.0.0:3000).
+
+## Add a new Gem to the project
+
+If you want to add a new Gem to this project, follow the step by step bellow:
+
+1. Run Docker Compose to build and start the Rails and PostgreSQL containers:
+    ```sh
+    docker compose up
+    ```
+
+2. Use bundle to add and install a gem. Replace `GEM_NAME` by the name of the desired gem:
+    ```sh
+    docker compose exec web bundle add GEM_NAME
+    ```
