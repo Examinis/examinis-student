@@ -67,3 +67,7 @@ gem "kaminari", "~> 1.2"
 gem "devise", "~> 4.9"
 
 gem "cancancan", "~> 3.6"
+
+gem "tailwindcss-ruby", "~> 4.0"
+
+gem "tailwindcss-rails", "~> 4.2"
