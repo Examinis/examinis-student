@@ -25,11 +25,12 @@ git clone git@github.com:Examinis/examinis-student.git
 # Using HTTPS
 git clone https://github.com/Examinis/examinis-student.git
 ```
+1. Inicialize o Docker em sua máquina (ao abrir o Docker Desktop, isso já é feito).
 
-2. Abra este projeto no Visual Studio Code através da interface gráfica (open folder) ou, caso seu
+1. Abra este projeto no Visual Studio Code através da interface gráfica (open folder) ou, caso seu
 VSCode tenha sido adicionado ao PATH, utilize o comando `code caminho/para/o/diretorio`.
 
-3. Assim que o projeto for aberto, a extensão "Dev Containers" (incluída no pack de extensões "Remote development")
+1. Assim que o projeto for aberto, a extensão "Dev Containers" (incluída no pack de extensões "Remote development")
 fará com que um popup seja aberto:
 ![Popup com a instrução para reabrir diretório em um container (extensão Dev Container)](public/reopen_in_container.png)
 
@@ -38,6 +39,14 @@ fará com que um popup seja aberto:
     Outra alternativa a selecionar a opção anterior é abrir a paleta de comandos do VSCode (aperte F1) e
 digitar *Dev Containers: Rebuild and Reopen in Container* (provavelmente, o autocomplete fará o seu
 trabalho antes que você termine de digitar tudo).
+
+## Adicionando novas Gems ao projeto
+
+1. Dentro do VSCode, certifique-se de que a aplicação está aberta em um "Dev Container":
+
+    ![Indicação no canto inferior esquerdo sobre o container onde o projeto está aberto](public/lower_left_container_indication.png)
+
+1. No terminal do container, digite o comando `bundle add {nome_da_gem}`.
 
 ## Estilo de codificação
 
