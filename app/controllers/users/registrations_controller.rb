@@ -44,7 +44,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
@@ -65,4 +65,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  
+  private
+
+  def user_params
+    params.require(:user).permit(:first_name, :last_name,
+      # Nested attributes for contacts
+      contacts_attributes: [ :id, :contact_type, :value, :_destroy ])
+  end
+
 end
