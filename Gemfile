@@ -71,3 +71,5 @@ gem "cancancan", "~> 3.6"
 gem "tailwindcss-ruby", "~> 4.0"
 
 gem "tailwindcss-rails", "~> 4.2"
+
+gem "pry-rails", "~> 0.3.11"
