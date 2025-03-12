@@ -1,0 +1,18 @@
+<div class="nested-form-wrapper" data-new-record="<%= f.object.new_record? %>">
+
+  <div class="field">
+    <%= f.label :contact_type, "Tipo de Contato" %>
+    <%= f.collection_select :contact_type, Contact.contact_types_for_select, :last, :first, {
+      include_blank: "Selecione o tipo de contato" } %>   
+  </div>
+
+  <div class="field">
+    <%= f.label :value, "Valor" %>
+    <%= f.text_field :value %>
+  </div>
+
+  <button type="button" data-action="nested-form#remove">Remover contato</button>
+
+  <%= f.hidden_field :_destroy %>
+
+</div>

@@ -15,7 +15,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_10_211734) do
   enable_extension "pg_catalog.plpgsql"
 
   create_table "contacts", force: :cascade do |t|
-    t.integer "contact_type", null: false
+    t.integer "contact_type", default: 0, null: false
     t.string "value", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
