@@ -69,3 +69,7 @@ gem "devise", "~> 4.9"
 gem "cancancan", "~> 3.6"
 
 gem "pry-rails", "~> 0.3.11"
+
+gem "dartsass-rails"
+
+gem "bootstrap", "~> 5.3.3"
