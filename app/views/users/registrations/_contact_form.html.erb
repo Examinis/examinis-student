@@ -3,7 +3,7 @@
   <div class="field">
     <%= f.label :contact_type, "Tipo de Contato" %>
     <%= f.collection_select :contact_type, Contact.contact_types_for_select, :last, :first, {
-      include_blank: "Selecione o tipo de contato" } %>   
+      include_blank: "Selecione o tipo de contato" } %>
   </div>
 
   <div class="field">

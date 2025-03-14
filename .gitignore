@@ -32,9 +32,3 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-
-/app/assets/builds/*
-!/app/assets/builds/.keep
-
-# Ignore a HTML draft file used to test Tailwind CSS styles.
-/public/tailwind.html
