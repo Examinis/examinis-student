@@ -22,7 +22,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body data-controller="sidebar" data-sidebar-breakpoint-value="768">
     <div class="container-fluid h-100 px-0">
       <div class="row g-0 h-100">
 
@@ -30,7 +30,10 @@
         <header class="d-md-none w-100 bg-light border-bottom">
           <nav class="navbar navbar-light">
             <div class="container-fluid">
-              <button class="navbar-toggler border-0" type="button" id="sidebar-toggler" aria-label="Toggle navigation">
+              <button class="navbar-toggler border-0"
+                      type="button"
+                      data-action="sidebar#toggle"
+                      aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <a class="navbar-brand" href="#">Examinis</a>
@@ -39,14 +42,19 @@
         </header>
 
         <%# Fixed Sidebar %>
-        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse h-100 shadow-lg position-fixed start-0 top-0 bottom-0 z-3">
+        <nav id="sidebar"
+             data-sidebar-target="sidebar"
+             class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse h-100 shadow-lg position-fixed start-0 top-0 bottom-0 z-3">
           <div class="d-flex flex-column h-100 p-3">
             <%# Header %>
             <div class="d-flex align-items-center justify-content-between px-3 pt-2 pb-0">
               <span class="d-inline-flex align-items-center gap-2">
                 <div class="p-toolbar-group-left">
                   <span class="fs-5 fw-bold tracking-tight">Examinis</span>
-                  <button type="button" class="btn-close d-md-none" id="sidebar-close" aria-label="Close"></button>
+                  <button type="button"
+                          class="btn-close d-md-none"
+                          data-action="sidebar#close"
+                          aria-label="Close"></button>
                 </div>
               </span>
             </div>
@@ -96,7 +104,10 @@
         </nav>
 
         <%# Overlay for mobile devices %>
-        <div id="sidebar-overlay" class="position-fixed d-md-none top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-2 d-none"></div>
+        <div id="sidebar-overlay"
+             data-sidebar-target="overlay"
+             data-action="click->sidebar#close" 
+             class="position-fixed d-md-none top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-2 d-none"></div>
 
         <%# Main Content Area %>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 h-100">
@@ -116,52 +127,5 @@
       </div>
     </div>
 
-    <%# JavaScript to handle sidebar toggling %>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const screenMediumInPixels = 768;
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggler = document.getElementById('sidebar-toggler');
-        const sidebarClose = document.getElementById('sidebar-close');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
-        
-        <%#
-         * Checks the current window width and adjusts sidebar visibility accordingly.
-         * If the window width is smaller than the medium screen breakpoint,
-         * hides the sidebar and its overlay.
-         *
-         * @function checkScreenSize
-         * @returns {void}
-        %>
-        function checkScreenSize() {
-          if (window.innerWidth < screenMediumInPixels) {
-            sidebar.classList.remove('show');
-            sidebarOverlay.classList.add('d-none');
-          }
-        }
-
-        // Toggle sidebar on mobile
-        sidebarToggler.addEventListener('click', function() {
-          sidebar.classList.toggle('show');
-          sidebarOverlay.classList.toggle('d-none');
-        });
-
-        // Close sidebar when overlay or close button is clicked
-        sidebarClose.addEventListener('click', function() {
-          sidebar.classList.remove('show');
-          sidebarOverlay.classList.add('d-none');
-        });
-
-        sidebarOverlay.addEventListener('click', function() {
-          sidebar.classList.remove('show');
-          sidebarOverlay.classList.add('d-none');
-        });
-
-        // Check screen size on load and resize
-        window.addEventListener('resize', checkScreenSize);
-        checkScreenSize();
-
-      });
-    </script>
   </body>
 </html>
