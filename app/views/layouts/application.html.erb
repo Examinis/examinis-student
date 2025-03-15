@@ -26,75 +26,91 @@
     <div class="container-fluid h-100 px-0">
       <div class="row g-0 h-100">
 
+        <%# Navbar for mobile devices %>
+        <header class="d-md-none w-100 bg-light border-bottom">
+          <nav class="navbar navbar-light">
+            <div class="container-fluid">
+              <button class="navbar-toggler border-0" type="button" id="sidebar-toggler" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <a class="navbar-brand" href="#">Examinis</a>
+            </div>
+          </nav>
+        </header>
+
         <%# Fixed Sidebar %>
-        <nav id="sidebar"
-          class="col-md-3 col-lg-2 d-md-block bg-light sidebar fixed h-100 shadow-lg collapse position-relative">
-          <%# Header %>
-          <div class="d-flex align-items-center justify-content-between px-3 pt-2 pb-0">
-            <span class="d-inline-flex align-items-center gap-2">
-              <div class="p-toolbar-group-left">
-                <span class="fs-5 fw-bold tracking-tight">Examinis</span>
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse h-100 shadow-lg position-fixed start-0 top-0 bottom-0 z-3">
+          <div class="d-flex flex-column h-100 p-3">
+            <%# Header %>
+            <div class="d-flex align-items-center justify-content-between px-3 pt-2 pb-0">
+              <span class="d-inline-flex align-items-center gap-2">
+                <div class="p-toolbar-group-left">
+                  <span class="fs-5 fw-bold tracking-tight">Examinis</span>
+                  <button type="button" class="btn-close d-md-none" id="sidebar-close" aria-label="Close"></button>
+                </div>
+              </span>
+            </div>
+
+            <hr class="mt-3 mb-3 mx-4">
+
+            <%# Main Menu %>
+            <div class="w-100 p-1">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#">
+                    <i class="bi bi-house"></i>
+                    Home
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="bi bi-file-earmark"></i>
+                    Reports
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <%# Footer %>
+            <div class="mt-auto">
+              <hr class="mb-3 mx-4">
+              <div class="d-flex justify-content-between pe-3 pb-2">
+                <% if user_signed_in? %>
+                  <a class="m-3 d-flex align-items-center cursor-pointer p-2 gap-2 rounded-lg link-dark text-decoration-none">
+                    <img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                      class="rounded-circle" width="30" height="30" alt="Admin Avatar">
+                    <span class="font-weight-bold">Olá, <%= current_user.first_name %>!</span>
+                  </a>
+                  <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: 'btn btn-danger btn-sm',
+                    form_class: 'd-flex flex-column justify-content-center'%>
+                <% end %>
               </div>
-            </span>
-          </div>
-
-          <hr class="mt-3 mb-3 mx-4">
-
-          <%# Main Menu %>
-          <div class="w-100 p-1">
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">
-                  <i class="bi bi-house"></i>
-                  Home
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="bi bi-file-earmark"></i>
-                  Reports
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="bi bi-gear"></i>
-                  Settings
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <%# Footer %>
-          <div class="mt-auto">
-            <hr class="mb-3 mx-4">
-            <div class="d-flex justify-content-between pe-3 pb-2">
-              <a class="m-3 d-flex align-items-center cursor-pointer p-2 gap-2 rounded-lg link-dark text-decoration-none">
-                <img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                  class="rounded-circle" width="30" height="30" alt="Admin Avatar">
-                <span class="font-weight-bold">Admin da Silva</span>
-              </a>
-              <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
             </div>
           </div>
         </nav>
 
+        <%# Overlay for mobile devices %>
+        <div id="sidebar-overlay" class="position-fixed d-md-none top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-2 d-none"></div>
+
         <%# Main Content Area %>
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 h-100">
 
-          <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <div class="container-fluid">
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <a class="navbar-brand" href="#">My App</a>
-            </div>
-          </nav>
-
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <%# Messages for Devise %>
-            <p class="notice"><%= notice %></p>
-            <p class="alert"><%= alert %></p>
+          <%# Messages for Devise %>
+          <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <%= notice %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= alert %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+
           <%= yield %>
         </main>
       </div>
@@ -103,13 +119,48 @@
     <%# JavaScript to handle sidebar toggling %>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        const sidebar = new bootstrap.Collapse(document.getElementById('sidebar'), {
-          toggle: false
+        const screenMediumInPixels = 768;
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggler = document.getElementById('sidebar-toggler');
+        const sidebarClose = document.getElementById('sidebar-close');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        
+        <%#
+         * Checks the current window width and adjusts sidebar visibility accordingly.
+         * If the window width is smaller than the medium screen breakpoint,
+         * hides the sidebar and its overlay.
+         *
+         * @function checkScreenSize
+         * @returns {void}
+        %>
+        function checkScreenSize() {
+          if (window.innerWidth < screenMediumInPixels) {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.add('d-none');
+          }
+        }
+
+        // Toggle sidebar on mobile
+        sidebarToggler.addEventListener('click', function() {
+          sidebar.classList.toggle('show');
+          sidebarOverlay.classList.toggle('d-none');
         });
 
-        document.querySelector('.navbar-toggler').addEventListener('click', function() {
-          sidebar.toggle();
+        // Close sidebar when overlay or close button is clicked
+        sidebarClose.addEventListener('click', function() {
+          sidebar.classList.remove('show');
+          sidebarOverlay.classList.add('d-none');
         });
+
+        sidebarOverlay.addEventListener('click', function() {
+          sidebar.classList.remove('show');
+          sidebarOverlay.classList.add('d-none');
+        });
+
+        // Check screen size on load and resize
+        window.addEventListener('resize', checkScreenSize);
+        checkScreenSize();
+
       });
     </script>
   </body>

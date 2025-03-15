@@ -25,7 +25,7 @@ git clone git@github.com:Examinis/examinis-student.git
 # Using HTTPS
 git clone https://github.com/Examinis/examinis-student.git
 ```
-1. Inicialize o Docker em sua máquina (ao abrir o Docker Desktop, isso já é feito).
+2. Inicialize o Docker em sua máquina (ao abrir o Docker Desktop, isso já é feito).
 
 1. Abra este projeto no Visual Studio Code através da interface gráfica (open folder) ou, caso seu
 VSCode tenha sido adicionado ao PATH, utilize o comando `code caminho/para/o/diretorio`.
@@ -39,6 +39,15 @@ fará com que um popup seja aberto:
     Outra alternativa a selecionar a opção anterior é abrir a paleta de comandos do VSCode (aperte F1) e
 digitar *Dev Containers: Rebuild and Reopen in Container* (provavelmente, o autocomplete fará o seu
 trabalho antes que você termine de digitar tudo).
+
+## Executando a aplicação em sua máquina
+
+1. Após garantir revisar os passos de configuração do projeto, abra um terminal dentro do próprio VSCode, visto que vamos executar os comandos dentro do container:
+
+```sh
+# Utilizamos este comando para executar a aplicação por conta da estilização
+./bin/rails restart && ./bin/rails assets:clobber && ./bin/rails assets:precompile && ./bin/dev
+```
 
 ## Adicionando novas Gems ao projeto
 
