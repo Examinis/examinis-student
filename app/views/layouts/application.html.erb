@@ -67,10 +67,14 @@
           <%# Footer %>
           <div class="mt-auto">
             <hr class="mb-3 mx-4">
-            <a class="m-3 d-flex align-items-center cursor-pointer p-2 gap-2 rounded-lg link-dark text-decoration-none">
-              <img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="rounded-circle" width="30" height="30" alt="Admin Avatar">
-              <span class="font-weight-bold">Admin da Silva</span>
-            </a>
+            <div class="d-flex justify-content-between pe-3 pb-2">
+              <a class="m-3 d-flex align-items-center cursor-pointer p-2 gap-2 rounded-lg link-dark text-decoration-none">
+                <img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                  class="rounded-circle" width="30" height="30" alt="Admin Avatar">
+                <span class="font-weight-bold">Admin da Silva</span>
+              </a>
+              <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
+            </div>
           </div>
         </nav>
 
