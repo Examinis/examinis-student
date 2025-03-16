@@ -25,7 +25,7 @@ git clone git@github.com:Examinis/examinis-student.git
 # Using HTTPS
 git clone https://github.com/Examinis/examinis-student.git
 ```
-1. Inicialize o Docker em sua máquina (ao abrir o Docker Desktop, isso já é feito).
+2. Inicialize o Docker em sua máquina (ao abrir o Docker Desktop, isso já é feito).
 
 1. Abra este projeto no Visual Studio Code através da interface gráfica (open folder) ou, caso seu
 VSCode tenha sido adicionado ao PATH, utilize o comando `code caminho/para/o/diretorio`.
@@ -40,6 +40,15 @@ fará com que um popup seja aberto:
 digitar *Dev Containers: Rebuild and Reopen in Container* (provavelmente, o autocomplete fará o seu
 trabalho antes que você termine de digitar tudo).
 
+## Executando a aplicação em sua máquina
+
+1. Após garantir revisar os passos de configuração do projeto, abra um terminal dentro do próprio VSCode, visto que vamos executar os comandos dentro do container:
+
+```sh
+# Utilizamos este comando para executar a aplicação por conta da estilização
+./bin/rails restart && ./bin/rails assets:clobber && ./bin/rails assets:precompile && ./bin/dev
+```
+
 ## Adicionando novas Gems ao projeto
 
 1. Dentro do VSCode, certifique-se de que a aplicação está aberta em um "Dev Container":
@@ -47,6 +56,11 @@ trabalho antes que você termine de digitar tudo).
     ![Indicação no canto inferior esquerdo sobre o container onde o projeto está aberto](public/lower_left_container_indication.png)
 
 1. No terminal do container, digite o comando `bundle add {nome_da_gem}`.
+
+## Instalando Gems após fazer o `git pull`
+
+Em algum momento, algum membro pode adicionar uma nova dependência ao projeto (uma nova *gem* no `Gemfile`) e, quando um outro membro da equipe puxar
+as novas alterações, este não terá essa *gem* instalada em seu ambiente. Portanto, para instalar as *gems* em seu ambiente, rode o comando `./bin/bundle install`.
 
 ## Estilo de codificação
 

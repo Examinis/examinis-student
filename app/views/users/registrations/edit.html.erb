@@ -1,53 +1,143 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="py-4 px-4 mx-auto transition-all">
+  <div class="card shadow">
+    <div class="card-header bg-white">
+      <h2 class="mb-0 fs-4">Editar Perfil</h2>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <h3 class="text-muted fs-6">Atualize seus dados pessoais</h3>
+      </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
+                  html: { method: :put, class: "d-flex flex-column gap-3" },
+                  data: { controller: "nested-form", nested_form_wrapper_selector_value: ".nested-form-wrapper" }) do |f| %>
+        
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name, autofocus: true, autocomplete: "given-name" %>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <%= f.text_field :first_name, autofocus: true, autocomplete: "given-name", class: "form-control", id: "floatingFirstName", placeholder: "First name" %>
+              <%= f.label :first_name, for: "floatingFirstName" %>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-floating">
+              <%= f.text_field :last_name, autocomplete: "family-name", class: "form-control", id: "floatingLastName", placeholder: "Last name" %>
+              <%= f.label :last_name, for: "floatingLastName" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-floating">
+          <%= f.email_field :email, autocomplete: "email", class: "form-control", id: "floatingEmail", placeholder: "Email" %>
+          <%= f.label :email, for: "floatingEmail" %>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            Aguardando confirmação para: <%= resource.unconfirmed_email %>
+          </div>
+        <% end %>
+
+        <%# Contacts %>
+        <div class="card mt-2 mb-3">
+          <div class="card-header bg-light">
+            <h4 class="fs-6 mb-0">Informações de Contato</h4>
+          </div>
+          <div class="card-body">
+            <template data-nested-form-target="template">
+              <%= f.fields_for :contacts,
+                Contact.new(contact_type: 0, value: ""),
+                child_index: 'NEW_RECORD' do |contact_fields| %>
+                <%= render "contact_form", f: contact_fields %>
+              <% end %>
+            </template>
+
+            <%= f.fields_for :contacts do |contact_fields| %>
+              <%= render "contact_form", f: contact_fields %>
+            <% end %>
+
+            <!-- Inserted elements will be injected before that target. -->
+            <div data-nested-form-target="target"></div>
+
+            <button type="button" class="btn btn-outline-primary mt-3" data-action="nested-form#add">
+              <i class="bi bi-plus-circle"></i> Adicionar contato
+            </button>
+          </div>
+        </div>
+
+        <div class="card mt-2 mb-3">
+          <div class="card-header bg-light">
+            <h4 class="fs-6 mb-0">Alterar Senha</h4>
+          </div>
+          <div class="card-body">
+            <div class="text-muted mb-3 small">
+              <i class="bi bi-info-circle me-1"></i>
+              Deixe em branco se você não quiser alterar sua senha
+            </div>
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <%= f.password_field :password, autocomplete: "new-password", class: "form-control", id: "floatingPassword", placeholder: "New password" %>
+                  <%= f.label :password, "Nova senha", for: "floatingPassword" %>
+                  <% if @minimum_password_length %>
+                    <div class="form-text">No mínimo, <%= @minimum_password_length %> caracteres</div>
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", id: "floatingPasswordConfirmation", placeholder: "Password confirmation" %>
+                  <%= f.label :password_confirmation, "Confirmar senha", for: "floatingPasswordConfirmation" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-2 mb-3">
+          <div class="card-header bg-light">
+            <h4 class="fs-6 mb-0">Confirmar Alterações</h4>
+          </div>
+          <div class="card-body">
+            <div class="text-muted mb-3 small">
+              <i class="bi bi-shield-lock me-1"></i>
+              Precisamos da sua senha atual para confirmar as alterações
+            </div>
+            
+            <div class="form-floating">
+              <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control", id: "floatingCurrentPassword", placeholder: "Current password" %>
+              <%= f.label :current_password, "Senha atual", for: "floatingCurrentPassword" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-3 mt-4">
+          <%= f.submit "Atualizar", class: "btn btn-primary flex-grow-1 py-2" %>
+          <%= link_to "Voltar", :back, class: "btn btn-outline-secondary flex-grow-1 py-2" %>
+        </div>
+      <% end %>
+
+      <div class="card mt-4 border-danger">
+        <div class="card-header bg-danger text-white">
+          <h4 class="fs-6 mb-0">Cancelar Minha Conta</h4>
+        </div>
+        <div class="card-body">
+          <p class="text-muted mb-3">Insatisfeito com o serviço? Você pode cancelar sua conta a qualquer momento.</p>
+          <div class="d-flex justify-content-end">
+            <%= button_to "Cancelar minha conta", 
+                        registration_path(resource_name), 
+                        data: { confirm: "Tem certeza?", turbo_confirm: "Tem certeza?" }, 
+                        method: :delete, 
+                        class: "btn btn-outline-danger" %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name, autocomplete: "family-name" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autocomplete: "email" %>
-  </div>
-
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>
