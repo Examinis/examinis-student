@@ -113,19 +113,25 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 h-100">
 
           <%# Messages for Devise %>
-          <div class="alert alert-primary alert-dismissible fade show" role="alert">
-            <%= notice %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <%= alert %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
+          <% if notice %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <%= notice %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% end %>
+          <% if alert %>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <%= alert %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% end %>
 
           <%= yield %>
         </main>
       </div>
     </div>
 
+  <%# FontAwesome kit CDN import %>
+  <script src="https://kit.fontawesome.com/6131b843d6.js" crossorigin="anonymous"></script>
   </body>
 </html>
