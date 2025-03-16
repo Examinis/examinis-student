@@ -1,4 +1,4 @@
-<div class="container py-4 px-4 mx-auto transition-all" style="max-width: 800px;">
+<div class="py-4 px-4 mx-auto transition-all">
   <div class="card shadow">
     <div class="card-header bg-white">
       <h2 class="mb-0 fs-4">Cadastro</h2>
@@ -67,7 +67,7 @@
               <%= f.password_field :password, autocomplete: "new-password", class: "form-control", id: "floatingPassword", placeholder: "Password" %>
               <%= f.label :password, for: "floatingPassword" %>
               <% if @minimum_password_length %>
-                <div class="form-text"><%= @minimum_password_length %> characters minimum</div>
+                <div class="form-text">No mínimo, <%= @minimum_password_length %> caracteres</div>
               <% end %>
             </div>
           </div>
