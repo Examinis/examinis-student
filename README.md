@@ -57,6 +57,11 @@ trabalho antes que você termine de digitar tudo).
 
 1. No terminal do container, digite o comando `bundle add {nome_da_gem}`.
 
+## Instalando Gems após fazer o `git pull`
+
+Em algum momento, algum membro pode adicionar uma nova dependência ao projeto (uma nova *gem* no `Gemfile`) e, quando um outro membro da equipe puxar
+as novas alterações, este não terá essa *gem* instalada em seu ambiente. Portanto, para instalar as *gems* em seu ambiente, rode o comando `./bin/bundle install`.
+
 ## Estilo de codificação
 
 O código-fonte deste projeto foi todo desenvolvido em inglês (inclusive os comentários e as entidades). Dessa maneira,
