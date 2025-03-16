@@ -9,7 +9,8 @@
       </div>
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), 
-                  html: { method: :put, class: "d-flex flex-column gap-3" }) do |f| %>
+                  html: { method: :put, class: "d-flex flex-column gap-3" },
+                  data: { controller: "nested-form", nested_form_wrapper_selector_value: ".nested-form-wrapper" }) do |f| %>
         
         <%= render "devise/shared/error_messages", resource: resource %>
 
@@ -40,6 +41,33 @@
             Aguardando confirmação para: <%= resource.unconfirmed_email %>
           </div>
         <% end %>
+
+        <%# Contacts %>
+        <div class="card mt-2 mb-3">
+          <div class="card-header bg-light">
+            <h4 class="fs-6 mb-0">Informações de Contato</h4>
+          </div>
+          <div class="card-body">
+            <template data-nested-form-target="template">
+              <%= f.fields_for :contacts,
+                Contact.new(contact_type: 0, value: ""),
+                child_index: 'NEW_RECORD' do |contact_fields| %>
+                <%= render "contact_form", f: contact_fields %>
+              <% end %>
+            </template>
+
+            <%= f.fields_for :contacts do |contact_fields| %>
+              <%= render "contact_form", f: contact_fields %>
+            <% end %>
+
+            <!-- Inserted elements will be injected before that target. -->
+            <div data-nested-form-target="target"></div>
+
+            <button type="button" class="btn btn-outline-primary mt-3" data-action="nested-form#add">
+              <i class="bi bi-plus-circle"></i> Adicionar contato
+            </button>
+          </div>
+        </div>
 
         <div class="card mt-2 mb-3">
           <div class="card-header bg-light">

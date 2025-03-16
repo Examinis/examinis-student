@@ -28,7 +28,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user = current_user
     # If the update is successful, redirect to the user profile page
     if @user.update(user_params)
-      redirect_to user_path(@user), notice: "Perfil atualizado com sucesso!"
+      redirect_to root_path, notice: "Perfil atualizado com sucesso!"
     end
   end
 
