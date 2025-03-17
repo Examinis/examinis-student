@@ -1,0 +1,22 @@
+<!-- app/views/exams/index.html.erb -->
+<h1>Exames</h1>
+
+<div class="exams-list">
+  <% if @exams.any? %>
+    <% @exams.each do |exam| %>
+      <div class="exam-card">
+        <h3><%= exam['title'] %></h3>
+        <p>Criado por: <%= "#{exam['user']['first_name']} #{exam['user']['last_name']}" %></p>
+        <p>Disciplina: <%= exam['subject']['name'] %></p>
+        <p>Criado em: <%= DateTime.parse(exam['created_at']).strftime('%d/%m/%Y %H:%M') %></p>
+        <p>Total de questões: <%= exam['total_question'] %></p>
+      </div>
+    <% end %>
+  <% else %>
+    <p>Nenhum exame encontrado.</p>
+  <% end %>
+</div>
+
+<div class="pagination">
+  <%= paginate @paginated_exams %>
+</div>
