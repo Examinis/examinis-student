@@ -75,3 +75,5 @@ gem "dartsass-rails"
 gem "bootstrap", "~> 5.3.3"
 
 gem "faraday"
+
+gem "dotenv-rails", groups: [ :development, :test ]

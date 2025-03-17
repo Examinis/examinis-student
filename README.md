@@ -42,12 +42,18 @@ trabalho antes que você termine de digitar tudo).
 
 ## Executando a aplicação em sua máquina
 
-1. Após garantir revisar os passos de configuração do projeto, abra um terminal dentro do próprio VSCode, visto que vamos executar os comandos dentro do container:
+1. Crie um arquivo `.env` na raíz do projeto.
 
-```sh
-# Utilizamos este comando para executar a aplicação por conta da estilização
-./bin/rails restart && ./bin/rails assets:clobber && ./bin/rails assets:precompile && ./bin/dev
-```
+1. Para o arquivo `.env`, siga a mesma estrutura do arquivo `.env.example`.
+    ```env
+    API_URL=http://example.com/api
+    ```
+
+1. Após garantir revisar os passos de configuração do projeto, abra um terminal dentro do próprio VSCode, visto que vamos executar os comandos dentro do container:
+    ```sh
+    # Utilizamos este comando para executar a aplicação por conta da estilização
+    ./bin/rails restart && ./bin/rails assets:clobber && ./bin/rails assets:precompile && ./bin/dev
+    ```
 
 ## Adicionando novas Gems ao projeto
 
