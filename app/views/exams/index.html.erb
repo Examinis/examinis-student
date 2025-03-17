@@ -1,22 +1,48 @@
 <!-- app/views/exams/index.html.erb -->
-<h1>Exames</h1>
+<div class="container mt-4">
+  <h1 class="mb-4 text-center fw-bold">Provas Disponíveis</h1>
 
-<div class="exams-list">
-  <% if @exams.any? %>
-    <% @exams.each do |exam| %>
-      <div class="exam-card">
-        <h3><%= exam['title'] %></h3>
-        <p>Criado por: <%= "#{exam['user']['first_name']} #{exam['user']['last_name']}" %></p>
-        <p>Disciplina: <%= exam['subject']['name'] %></p>
-        <p>Criado em: <%= DateTime.parse(exam['created_at']).strftime('%d/%m/%Y %H:%M') %></p>
-        <p>Total de questões: <%= exam['total_question'] %></p>
+  <div class="row">
+    <% if @exams.any? %>
+      <% @exams.each do |exam| %>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100 shadow border-0">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title fw-bold text-primary"><%= exam['title'] %></h5>
+              <div class="card-text flex-grow-1">
+                <p class="mb-2 text-muted">
+                  <i class="bi bi-person me-2"></i>
+                  <strong><%= "#{exam['user']['first_name']} #{exam['user']['last_name']}" %></strong>
+                </p>
+                <p class="mb-2 text-muted">
+                  <i class="bi bi-book me-2"></i>
+                  <strong><%= exam['subject']['name'] %></strong>
+                </p>
+                <p class="mb-2 text-muted">
+                  <i class="bi bi-calendar-date me-2"></i>
+                  <%= DateTime.parse(exam['created_at']).strftime('%d/%m/%Y %H:%M') %>
+                </p>
+                <p class="mb-3 text-muted">
+                  <i class="bi bi-list-check me-2"></i>
+                  <strong><%= exam['total_question'] %></strong> questões
+                </p>
+              </div>
+              <a href="#" class="btn btn-outline-primary mt-auto">
+                <i class="bi bi-eye me-1"></i> Visualizar
+              </a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-12 text-center py-5">
+        <i class="bi bi-search text-secondary" style="font-size: 3rem;"></i>
+        <p class="mt-3 text-muted fw-bold">Nenhum exame encontrado.</p>
       </div>
     <% end %>
-  <% else %>
-    <p>Nenhum exame encontrado.</p>
-  <% end %>
-</div>
+  </div>  
 
-<div class="pagination">
-  <%= paginate @paginated_exams %>
+  <div class="d-flex justify-content-center mt-4">
+    <%= paginate @paginated_exams %>
+  </div>
 </div>
