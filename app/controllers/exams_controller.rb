@@ -1,5 +1,7 @@
 # app/controllers/exams_controller.rb
 class ExamsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @page = (params[:page] || 1).to_i
     @size = (params[:size] || 9).to_i

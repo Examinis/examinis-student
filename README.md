@@ -42,6 +42,26 @@ trabalho antes que você termine de digitar tudo).
 
 ## Executando a aplicação em sua máquina
 
+1. Certifique-se de que a [API FastAPI](https://github.com/Examinis/examinis-api) está executando.
+
+1. Obtenha o IP da aplicação *FastAPI* executando o comando `docker network inspect examinis_network`.
+    - O IPv4 pode ser obtido no seguinte trecho:
+    ```json
+    "Containers": {
+            ...
+
+            "8f093d17b7921f84420d500e6ae5436a6148544a2eac6b29c40b6687401c802d": {
+                "Name": "examinis_api",
+                "EndpointID": "04c798d740f3956389324344d6911c12c29ab0c639a46e28ce6e80ee21baf842",
+                "MacAddress": "02:42:ac:16:00:03",
+                "IPv4Address": "172.22.0.3/16", // Este é o endereço que estamos procurando
+                "IPv6Address": ""
+            },
+
+            ...
+        },
+    ```
+
 1. Crie um arquivo `.env` na raíz do projeto.
 
 1. Para o arquivo `.env`, siga a mesma estrutura do arquivo `.env.example`.
