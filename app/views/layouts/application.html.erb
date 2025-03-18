@@ -24,6 +24,15 @@
     <%= javascript_importmap_tags %>
   </head>
 
+
+<% if user_signed_in? %>
+  <nav id="sidebar"
+       data-sidebar-target="sidebar"
+       class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse h-100 shadow-lg position-fixed start-0 top-0 bottom-0 z-3">
+    ...
+  </nav>
+<% end %>
+
   <body data-controller="sidebar" data-sidebar-breakpoint-value="768">
     <div class="container-fluid h-100 px-0">
       <div class="row g-0 h-100">
