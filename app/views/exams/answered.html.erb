@@ -1,22 +1,59 @@
 <div class="container mt-4">
-  <h1 class="mb-4 text-center fw-bold">Exames Respondidos</h1>
+  <h1 class="mb-4 text-center fw-bold">Histórico de Provas Respondidas</h1>
 
   <% if @answered_exams.any? %>
-    <div class="list-group">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <% @answered_exams.each do |exam| %>
-        <a href="<%= answered_exams_path %>/<%= exam.id %>" class="list-group-item list-group-item-action">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <h5 class="mb-1"><%= exam.title %></h5>
-              <small class="text-muted">Pontuação: <%= exam.score %>%</small>
+        <div class="col">
+          <div class="card h-100 shadow border-0">
+            <div class="card-header bg-transparent">
+              <h5 class="card-title mb-0 fw-bold text-primary">
+                <%= exam.title %>
+              </h5>
             </div>
-            <span class="badge bg-primary"><%= exam.subject.name %></span>
+            
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-secondary">
+                  <% 
+                    attempt_number = Exam.where(
+                      user: current_user, 
+                      external_id: exam.external_id
+                    ).where("answered_at <= ?", exam.answered_at).count 
+                  %>
+                  Tentativa <%= attempt_number %>
+                </span>
+                
+                <span class="badge <%= exam.score >= 70 ? 'bg-success' : (exam.score >= 50 ? 'bg-warning' : 'bg-danger') %>">
+                  <%= exam.score %>%
+                </span>
+              </div>
+              
+              <p class="card-text text-muted mb-2">
+                <i class="bi bi-book"></i> <%= exam.subject.name %>
+              </p>
+              
+              <p class="card-text text-muted mb-2">
+                <i class="bi bi-person"></i> <%= "#{exam.teacher.first_name} #{exam.teacher.last_name}" %>
+              </p>
+              
+              <p class="card-text text-muted">
+                <i class="bi bi-calendar"></i> <%= exam.answered_at.strftime("%d/%m/%Y %H:%M") %>
+              </p>
+            </div>
+            
+            <div class="card-footer bg-transparent border-0 text-end">
+              <a href="/exams/answered/<%= exam.id %>" class="btn btn-primary">
+                <i class="bi bi-eye"></i> Ver detalhes
+              </a>
+            </div>
           </div>
-          <small class="text-muted">Respondido em: <%= exam.answered_at.strftime("%d/%m/%Y %H:%M") %></small>
-        </a>
+        </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-center text-muted">Nenhum exame respondido ainda.</p>
+    <div class="alert alert-info text-center">
+      <i class="bi bi-info-circle"></i> Você ainda não respondeu nenhuma prova.
+    </div>
   <% end %>
 </div>

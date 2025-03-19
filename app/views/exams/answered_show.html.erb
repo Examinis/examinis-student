@@ -2,8 +2,21 @@
   <h1 class="mb-4 text-center fw-bold">Resultado da Prova</h1>
 
   <div class="card shadow border-0 p-4">
-    <h3 class="fw-bold text-primary mb-3"><%= @exam.title %></h3>
-    <p class="text-muted"><strong>Professor:</strong> <%= "#{@exam.user.first_name} #{@exam.user.last_name}" %></p>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="fw-bold text-primary mb-0"><%= @exam.title %></h3>
+      
+      <% 
+        # Calcular qual tentativa é este exame
+        attempt_number = Exam.where(
+          user: current_user, 
+          external_id: @exam.external_id
+        ).where("answered_at <= ?", @exam.answered_at).count 
+      %>
+      
+      <span class="badge bg-secondary">Tentativa <%= attempt_number %></span>
+    </div>
+    
+    <p class="text-muted"><strong>Professor:</strong> <%= "#{@exam.teacher.first_name} #{@exam.teacher.last_name}" %></p>
     <p class="text-muted"><strong>Disciplina:</strong> <%= @exam.subject.name %></p>
     <p class="text-muted"><strong>Data de Resposta:</strong> <%= @exam.answered_at.strftime("%d/%m/%Y %H:%M") %></p>
     <p class="text-muted"><strong>Pontuação:</strong> <%= @exam.score %>%</p>
@@ -13,23 +26,33 @@
     <div class="card mt-4 shadow border-0 p-4">
       <h5 class="fw-bold">Pergunta <%= index + 1 %>: <%= question.text %></h5>
 
+      <% user_answer = @user_answers[question.id] %>
+      <% selected_option_id = user_answer&.option_id %>
+
       <% question.options.each do |option| %>
-        <div class="form-check p-2 rounded"
-             style="background-color: <%= option.selected ? (option.is_correct ? '#d4edda' : '#f8d7da') : 'transparent' %>;">
-          <input type="radio" class="form-check-input" disabled
-                 <%= 'checked' if option.selected %>>
+        <% is_selected = (selected_option_id == option.id) %>
+        <div class="form-check p-2 rounded <%= is_selected ? (option.is_correct ? 'bg-success-subtle' : 'bg-danger-subtle') : '' %>">
+          <input type="radio" class="form-check-input" disabled <%= 'checked' if is_selected %>>
           <label class="form-check-label">
             <strong><%= option.letter %>.</strong> <%= option.description %>
-            <% if option.selected %>
+            <% if is_selected %>
               <% if option.is_correct %>
-                <span class="text-success fw-bold">(Correto)</span>
+                <span class="text-success fw-bold"><i class="bi bi-check-circle-fill"></i> (Correto)</span>
               <% else %>
-                <span class="text-danger fw-bold">(Errado)</span>
+                <span class="text-danger fw-bold"><i class="bi bi-x-circle-fill"></i> (Errado)</span>
               <% end %>
+            <% elsif option.is_correct %>
+              <span class="text-muted fw-bold"><i class="bi bi-info-circle"></i> (Resposta correta)</span>
             <% end %>
           </label>
         </div>
       <% end %>
     </div>
   <% end %>
+
+  <div class="d-flex justify-content-between mt-4 mb-5">
+    <a href="<%= answered_exams_path %>" class="btn btn-outline-primary">
+      <i class="bi bi-arrow-left"></i> Voltar para Provas Respondidas
+    </a>
+  </div>
 </div>

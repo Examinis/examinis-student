@@ -10,11 +10,19 @@ class User < ApplicationRecord
 
   # Relationship with exams
   has_many :exams, dependent: :destroy
+  has_many :user_answers, dependent: :destroy
 
   before_create :set_default_role
 
+  ROLES = %w[student admin].freeze
+
   # Validations
   validates :first_name, :last_name, presence: true
+
+  # Check if user is admin
+  def admin?
+    role == "admin"
+  end
 
   private
 

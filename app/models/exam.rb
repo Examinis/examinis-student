@@ -5,4 +5,5 @@ class Exam < ApplicationRecord
 
   has_many :exam_questions, dependent: :destroy
   has_many :questions, through: :exam_questions
+  has_many :user_answers, dependent: :destroy
 end

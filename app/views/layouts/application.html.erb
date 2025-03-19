@@ -75,6 +75,14 @@
                       Listar provas
                     </a>
                   </li>
+                  <% if current_user.admin? %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="<%= members_path %>">
+                        <i class="fas fa-users"></i>
+                        Gerenciar usuários
+                      </a>
+                    </li>
+                  <% end %>
                 </ul>
               </div>
 
@@ -83,7 +91,8 @@
                 <hr class="mb-3 mx-4">
                 <div class="d-flex justify-content-between pe-3 pb-2">
                   <% if user_signed_in? %>
-                    <a class="m-3 d-flex align-items-center cursor-pointer p-2 gap-2 rounded-lg link-dark text-decoration-none">
+                    <a class="m-3 d-flex align-items-center cursor-pointer p-2 gap-2 rounded-lg link-dark text-decoration-none"
+                      href="<%= edit_user_registration_path(current_user.id) %>">
                       <img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
                         class="rounded-circle" width="30" height="30" alt="Admin Avatar">
                       <span class="font-weight-bold">Olá, <%= current_user.first_name %>!</span>
