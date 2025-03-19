@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  instructions: MyText
+  answered_at: 2025-03-19 00:46:26
+  score: 1
+  teacher: one
+  subject: one
+
+two:
+  title: MyString
+  instructions: MyText
+  answered_at: 2025-03-19 00:46:26
+  score: 1
+  teacher: two
+  subject: two

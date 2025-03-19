@@ -51,9 +51,9 @@ class ExamsController < ApplicationController
 
   def save_exam(response_data)
     ActiveRecord::Base.transaction do
-      user = User.find_or_create_by(id: response_data["user"]["id"]) do |u|
-        u.first_name = response_data["user"]["first_name"]
-        u.last_name = response_data["user"]["last_name"]
+      teacher = Teacher.find_or_create_by(id: response_data["teacher"]["id"]) do |t|
+        t.first_name = response_data["teacher"]["first_name"]
+        t.last_name = response_data["teacher"]["last_name"]
       end
 
       subject = Subject.find_or_create_by(id: response_data["subject"]["id"]) do |s|
@@ -66,7 +66,7 @@ class ExamsController < ApplicationController
         instructions: response_data["instructions"],
         answered_at: response_data["answered_at"],
         score: response_data["score"],
-        user: user,
+        teacher: teacher,
         subject: subject
       )
 

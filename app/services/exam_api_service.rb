@@ -1,6 +1,6 @@
 class ExamApiService
   def self.connection
-    @connection ||= Faraday.new(url: "http://172.21.0.3:8000/api") do |faraday|
+    @connection ||= Faraday.new(url: "http://172.22.0.3:8000/api") do |faraday|
       faraday.headers["Accept"] = "application/json"
       faraday.adapter Faraday.default_adapter
     end
