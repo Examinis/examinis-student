@@ -4,7 +4,7 @@
   <% if @answered_exams.any? %>
     <div class="list-group">
       <% @answered_exams.each do |exam| %>
-        <a href="<%= answered_exams_path(exam.id) %>" class="list-group-item list-group-item-action">
+        <a href="<%= answered_exams_path %>/<%= exam.id %>" class="list-group-item list-group-item-action">
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <h5 class="mb-1"><%= exam.title %></h5>
