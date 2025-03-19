@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :exams, only: [ :index, :show ]
+  resources :exams, only: [ :index, :show ] do
+    post "submit", on: :member
+  end
 
   devise_for :users, controllers: {
     registrations: "users/registrations"

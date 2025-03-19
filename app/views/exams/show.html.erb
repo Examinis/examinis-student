@@ -8,9 +8,7 @@
     <p class="text-muted"><strong>Instruções:</strong> <%= @exam['instructions'] %></p>
   </div>
   
-  <%# TODO - a URL mudará para a de baixo %>
-  <%# url: submit_exam_path(@exam['id']) %>
-  <%= form_with url: "#", method: :post, local: true do |form| %>
+  <%= form_with url: submit_exam_path(@exam['id']), method: :post, local: true do |form| %>
     <% @exam['questions'].each_with_index do |question, index| %>
       <div class="card mt-4 shadow border-0 p-4">
         <h5 class="fw-bold">Pergunta <%= index + 1 %>: <%= question['text'] %></h5>
