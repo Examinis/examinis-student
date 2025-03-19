@@ -1,2 +1,118 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class="container-fluid p-0">
+  <!-- Hero Section -->
+  <section class="hero bg-primary text-white text-center py-5">
+    <div class="container">
+      <h1 class="display-2 fw-bold">Examinis</h1>
+      <p class="lead fs-4">A plataforma definitiva alunos!</p>
+      <div class="mt-4">
+        <%= link_to 'Comece agora', new_user_session_path, class: "btn btn-light btn-lg mx-2" %>
+        <%= link_to 'Saiba mais', '#benefits', class: "btn btn-outline-light btn-lg mx-2" %>
+      </div>
+    </div>
+  </section>
+
+ <!-- Features Section -->
+<section class="features py-5">
+  <div class="container text-center">
+    <h2 class="fw-bold">Por que usar o Examinis?</h2>
+    <p class="text-muted">Uma experiência efetiva para alunos responderem suas provas.</p>
+    <div class="row mt-5">
+      <div class="col-md-4 d-flex flex-column align-items-center text-center">
+        <i class="fas fa-chalkboard-teacher text-primary" style="font-size: 3rem;"></i>
+        <h4 class="mt-3">Professores Enviam Provas</h4>
+        <p class="px-3">Crie avaliações personalizadas e observe o desempenho dos alunos.</p>
+      </div>
+      <div class="col-md-4 d-flex flex-column align-items-center text-center">
+        <i class="fas fa-edit text-primary" style="font-size: 3rem;"></i>
+        <h4 class="mt-3">Alunos Respondem</h4>
+        <p class="px-3">Pratique com provas interativas e aprimore seus conhecimentos.</p>
+      </div>
+      <div class="col-md-4 d-flex flex-column align-items-center text-center">
+        <i class="fas fa-robot text-primary" style="font-size: 3rem;"></i>
+        <h4 class="mt-3">Inteligência Artificial</h4>
+        <p class="px-3">Peça explicações para a IA quando quiser entender os seus erros.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Example Subjects Section -->
+<section class="subjects bg-light py-5">
+  <div class="container text-center">
+    <h2 class="fw-bold">Exemplos de Matérias</h2>
+    <p class="text-muted">Veja algumas das disciplinas disponíveis para avaliação.</p>
+    <div class="row mt-4">
+      <div class="col-md-3 d-flex">
+        <div class="card shadow-sm border-0 h-100 w-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Matemática</h5>
+            <p class="card-text flex-grow-1">Álgebra, Geometria, Estatística e mais.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 d-flex">
+        <div class="card shadow-sm border-0 h-100 w-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Ciências</h5>
+            <p class="card-text flex-grow-1">Biologia, Física e Química para todas as idades.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 d-flex">
+        <div class="card shadow-sm border-0 h-100 w-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">História</h5>
+            <p class="card-text flex-grow-1">Fatos históricos e contextos sociais.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 d-flex">
+        <div class="card shadow-sm border-0 h-100 w-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Idiomas</h5>
+            <p class="card-text flex-grow-1">Português, Inglês, Espanhol e mais.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Benefits Section -->
+  <section id="benefits" class="benefits py-5">
+    <div class="container text-center">
+      <h2 class="fw-bold">Benefícios do Examinis</h2>
+      <p class="text-muted">Uma plataforma moderna para impulsionar seu aprendizado.</p>
+      <div class="row mt-5">
+        <div class="col-md-4">
+          <i class="fas fa-clock fa-3x text-primary"></i>
+          <h4 class="mt-3">Acesse a qualquer hora</h4>
+          <p>Estude e faça provas no seu ritmo.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="fas fa-mobile-alt fa-3x text-primary"></i>
+          <h4 class="mt-3">100% Responsivo</h4>
+          <p>Acesse de qualquer dispositivo.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="fas fa-award fa-3x text-primary"></i>
+          <h4 class="mt-3">Notas</h4>
+          <p>Receba suas notas assim que responder provas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta bg-primary text-white text-center py-5">
+    <div class="container">
+      <h2 class="fw-bold">Pronto para transformar seu aprendizado?</h2>
+      <p class="lead">Junte-se ao Examinis e comece a evoluir agora!</p>
+      <div class="mt-4">
+        <%= link_to 'Cadastrar-se', new_user_registration_path, class: "btn btn-light btn-lg mx-2" %>
+        <%= link_to 'Entrar', new_user_session_path, class: "btn btn-outline-light btn-lg mx-2" %>
+      </div>
+    </div>
+  </section>
+</div>
