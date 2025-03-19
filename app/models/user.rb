@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :contacts, dependent: :destroy
   accepts_nested_attributes_for :contacts, reject_if: :all_blank, allow_destroy: true
 
+  # Relationship with exams
+  has_many :exams, dependent: :destroy
+
   before_create :set_default_role
 
   # Validations

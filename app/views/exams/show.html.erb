@@ -1,0 +1,34 @@
+<div class="container mt-4">
+  <h1 class="mb-4 text-center fw-bold">Responder Prova</h1>
+  
+  <div class="card shadow border-0 p-4">
+    <h3 class="fw-bold text-primary mb-3"><%= @exam['title'] %></h3>
+    <p class="text-muted"><strong>Professor:</strong> <%= "#{@exam['user']['first_name']} #{@exam['user']['last_name']}" %></p>
+    <p class="text-muted"><strong>Disciplina:</strong> <%= @exam['subject']['name'] %></p>
+    <p class="text-muted"><strong>Instruções:</strong> <%= @exam['instructions'] %></p>
+  </div>
+  
+  <%= form_with url: submit_exam_path(@exam['id']), method: :post, local: true do |form| %>
+    <% @exam['questions'].each_with_index do |question, index| %>
+      <div class="card mt-4 shadow border-0 p-4">
+        <h5 class="fw-bold">Pergunta <%= index + 1 %>: <%= question['text'] %></h5>
+        
+        <% question['options'].each do |option| %>
+          <div class="form-check">
+            <%= form.radio_button "answers[#{question['id']}]", option['id'], 
+                                  id: "option_#{option['id']}", 
+                                  class: "form-check-input", 
+                                  required: true %>
+            <%= form.label "option_#{option['id']}", class: "form-check-label" do %>
+              <strong><%= option['letter'] %>.</strong> <%= option['description'] %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    
+    <div class="text-center mt-4 pb-4">
+      <%= form.submit "Enviar Respostas", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

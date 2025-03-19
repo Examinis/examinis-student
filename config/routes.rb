@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
-  get "exams/index"
+  resources :exams, only: [ :index, :show ] do
+    post "submit", on: :member
+    get "answered", on: :collection
+    get "answered/:id", to: "exams#answered_show", on: :collection
+  end
+
   devise_for :users, controllers: {
     registrations: "users/registrations"
   }
   get "home/index"
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

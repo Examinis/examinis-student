@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <h1 class="mb-4 text-center fw-bold">Resultado da Prova</h1>
+
+  <div class="card shadow border-0 p-4">
+    <h3 class="fw-bold text-primary mb-3"><%= @exam.title %></h3>
+    <p class="text-muted"><strong>Professor:</strong> <%= "#{@exam.user.first_name} #{@exam.user.last_name}" %></p>
+    <p class="text-muted"><strong>Disciplina:</strong> <%= @exam.subject.name %></p>
+    <p class="text-muted"><strong>Data de Resposta:</strong> <%= @exam.answered_at.strftime("%d/%m/%Y %H:%M") %></p>
+    <p class="text-muted"><strong>Pontuação:</strong> <%= @exam.score %>%</p>
+  </div>
+
+  <% @exam.questions.each_with_index do |question, index| %>
+    <div class="card mt-4 shadow border-0 p-4">
+      <h5 class="fw-bold">Pergunta <%= index + 1 %>: <%= question.text %></h5>
+
+      <% question.options.each do |option| %>
+        <div class="form-check p-2 rounded"
+             style="background-color: <%= option.selected ? (option.is_correct ? '#d4edda' : '#f8d7da') : 'transparent' %>;">
+          <input type="radio" class="form-check-input" disabled
+                 <%= 'checked' if option.selected %>>
+          <label class="form-check-label">
+            <strong><%= option.letter %>.</strong> <%= option.description %>
+            <% if option.selected %>
+              <% if option.is_correct %>
+                <span class="text-success fw-bold">(Correto)</span>
+              <% else %>
+                <span class="text-danger fw-bold">(Errado)</span>
+              <% end %>
+            <% end %>
+          </label>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

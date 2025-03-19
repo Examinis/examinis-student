@@ -23,4 +23,17 @@ class ExamApiService
       puts "Erro ao buscar prova"
     end
   end
+
+  def self.submit_exam(exam_id, payload)
+    response = connection.post("/exams/#{exam_id}/grade") do |req|
+      req.headers["Content-Type"] = "application/json"
+      req.body = payload.to_json
+    end
+
+    if response.status == 200
+      JSON.parse(response.body)
+    else
+      { "success" => false }
+    end
+  end
 end
