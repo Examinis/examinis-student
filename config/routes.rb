@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "users/index"
+
   resources :exams, only: [ :index, :show ] do
     post "submit", on: :member
     get "answered", on: :collection

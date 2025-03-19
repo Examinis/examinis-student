@@ -16,6 +16,11 @@ class User < ApplicationRecord
   # Validations
   validates :first_name, :last_name, presence: true
 
+  # Check if user is admin
+  def admin?
+    role == "admin"
+  end
+
   private
 
   def set_default_role
