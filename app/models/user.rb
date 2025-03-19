@@ -14,6 +14,8 @@ class User < ApplicationRecord
 
   before_create :set_default_role
 
+  ROLES = %w[student admin].freeze
+
   # Validations
   validates :first_name, :last_name, presence: true
 

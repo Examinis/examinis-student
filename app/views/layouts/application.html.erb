@@ -75,6 +75,14 @@
                       Listar provas
                     </a>
                   </li>
+                  <% if current_user.admin? %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="<%= members_path %>">
+                        <i class="fas fa-users"></i>
+                        Gerenciar usuários
+                      </a>
+                    </li>
+                  <% end %>
                 </ul>
               </div>
 

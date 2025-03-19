@@ -6,7 +6,9 @@ class Ability
   def initialize(user)
     nil unless user.present?
     can :read, Exam, user_id: user.id
+    can :manage, User, id: user.id
     can :manage, Contact, user_id: user.id
+    can :manage, UserAnswer, user_id: user.id
 
     # Admin can manage all
     nil unless user.admin?
