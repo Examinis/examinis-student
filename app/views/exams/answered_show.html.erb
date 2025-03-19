@@ -2,7 +2,20 @@
   <h1 class="mb-4 text-center fw-bold">Resultado da Prova</h1>
 
   <div class="card shadow border-0 p-4">
-    <h3 class="fw-bold text-primary mb-3"><%= @exam.title %></h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="fw-bold text-primary mb-0"><%= @exam.title %></h3>
+      
+      <% 
+        # Calcular qual tentativa é este exame
+        attempt_number = Exam.where(
+          user: current_user, 
+          external_id: @exam.external_id
+        ).where("answered_at <= ?", @exam.answered_at).count 
+      %>
+      
+      <span class="badge bg-secondary">Tentativa <%= attempt_number %></span>
+    </div>
+    
     <p class="text-muted"><strong>Professor:</strong> <%= "#{@exam.teacher.first_name} #{@exam.teacher.last_name}" %></p>
     <p class="text-muted"><strong>Disciplina:</strong> <%= @exam.subject.name %></p>
     <p class="text-muted"><strong>Data de Resposta:</strong> <%= @exam.answered_at.strftime("%d/%m/%Y %H:%M") %></p>
@@ -19,8 +32,7 @@
       <% question.options.each do |option| %>
         <% is_selected = (selected_option_id == option.id) %>
         <div class="form-check p-2 rounded <%= is_selected ? (option.is_correct ? 'bg-success-subtle' : 'bg-danger-subtle') : '' %>">
-          <input type="radio" class="form-check-input" disabled
-                 <%= 'checked' if is_selected %>>
+          <input type="radio" class="form-check-input" disabled <%= 'checked' if is_selected %>>
           <label class="form-check-label">
             <strong><%= option.letter %>.</strong> <%= option.description %>
             <% if is_selected %>

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :exams, only: [ :index, :show ] do
     post "submit", on: :member
     get "answered", on: :collection
-    get "answered/:id", to: "exams#answered_show", on: :collection
+    get "answered/:id", to: "exams#answered_show", on: :collection, as: "answered_show"
   end
 
   devise_for :users, controllers: {

@@ -53,9 +53,8 @@ class ExamsController < ApplicationController
 
   def save_exam(response_data, user)
     ActiveRecord::Base.transaction do
-      # Buscar o ID externo do exame (da API)
+      # Pegar o ID externo do exame da API
       external_exam_id = response_data["id"] || response_data["exam_id"]
-      Rails.logger.info "Salvando exame com ID externo: #{external_exam_id} para o usuário #{user.id}"
 
       teacher = Teacher.find_or_create_by(id: response_data["teacher"]["id"]) do |t|
         t.first_name = response_data["teacher"]["first_name"]
@@ -66,37 +65,28 @@ class ExamsController < ApplicationController
         s.name = response_data["subject"]["name"]
       end
 
-      # Procurar ou criar o exame, armazenando o ID externo
-      exam = Exam.find_or_create_by(
-        user: user,
-        external_id: external_exam_id
-      ) do |e|
-        e.title = response_data["title"]
-        e.instructions = response_data["instructions"]
-        e.teacher = teacher
-        e.subject = subject
-      end
-
-      # Atualizar os campos que podem mudar
-      exam.update!(
-        answered_at: response_data["answered_at"],
-        score: response_data["score"]
+      # Sempre criar um novo exame para cada resposta do usuário
+      # Usamos o timestamp atual para garantir um registro único
+      exam = Exam.create!(
+        title: response_data["title"],
+        instructions: response_data["instructions"],
+        answered_at: response_data["answered_at"] || Time.current,
+        score: response_data["score"],
+        external_id: external_exam_id,
+        teacher: teacher,
+        subject: subject,
+        user: user
       )
 
-      # Limpar respostas existentes para evitar duplicatas
-      UserAnswer.where(user: user, exam: exam).destroy_all
-      Rails.logger.info "Respostas anteriores removidas para o exame ID=#{exam.id}"
-
-      # Salvar as questões e respostas
       response_data["questions"].each do |question_data|
         question = Question.find_or_create_by(id: question_data["id"]) do |q|
           q.text = question_data["text"]
         end
 
-        # Garantir que a relação entre exame e questão existe
-        exam.exam_questions.find_or_create_by!(question: question)
+        # Criar a relação entre exame e questão
+        exam.exam_questions.create!(question: question)
 
-        # Verificar qual opção foi selecionada
+        # Verificar qual opção foi selecionada pelo usuário
         selected_option = nil
 
         question_data["options"].each do |option_data|
@@ -109,39 +99,32 @@ class ExamsController < ApplicationController
           # Verificar se esta opção foi selecionada
           if option_data["selected"]
             selected_option = option
-            Rails.logger.info "Opção selecionada: Q#{question.id}, O#{option.id} para Exame #{exam.id}"
           end
         end
 
         # Salvar a resposta do usuário se uma opção foi selecionada
         if selected_option
-          user_answer = UserAnswer.create!(
+          UserAnswer.create!(
             user: user,
             question: question,
             option: selected_option,
             exam: exam
           )
-          Rails.logger.info "UserAnswer criada: ID=#{user_answer.id}, User=#{user.id}, Exam=#{exam.id}, Q=#{question.id}, O=#{selected_option.id}"
-        else
-          Rails.logger.info "Nenhuma opção selecionada para Q#{question.id}"
         end
       end
-
-      # Verificação final
-      answer_count = UserAnswer.where(user: user, exam: exam).count
-      Rails.logger.info "Exame salvo com sucesso. ID=#{exam.id}, Respostas: #{answer_count}"
 
       exam
     end
   rescue ActiveRecord::RecordInvalid => e
-    Rails.logger.error "Erro ao salvar exame: #{e.message}"
     nil
   end
 
 
 
   def answered
-    @answered_exams = Exam.where(user: current_user).order(answered_at: :desc)
+    @answered_exams = Exam.where(user: current_user)
+                          .includes(:subject, :teacher)
+                          .order(answered_at: :desc)
   end
 
   def answered_show
