@@ -1,0 +1,15 @@
+<div class="container mt-4">
+  <h1>Detalhes do Membro</h1>
+  
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><%= "#{@user.first_name} #{@user.last_name}" %></h5>
+      <p class="card-text">
+        <strong>Email:</strong> <%= @user.email %><br>
+        <strong>Função:</strong> <%= @user.role %>
+      </p>
+      <%= link_to 'Editar', edit_member_path(@user), class: 'btn btn-primary' %>
+      <%= link_to 'Voltar', members_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</div>

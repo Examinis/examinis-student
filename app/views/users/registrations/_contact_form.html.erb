@@ -1,18 +1,31 @@
-<div class="nested-form-wrapper" data-new-record="<%= f.object.new_record? %>">
-
-  <div class="field">
-    <%= f.label :contact_type, "Tipo de Contato" %>
-    <%= f.collection_select :contact_type, Contact.contact_types_for_select, :last, :first, {
-      include_blank: "Selecione o tipo de contato" } %>
+<div class="nested-form-wrapper card mb-3" data-new-record="<%= f.object.new_record? %>">
+  <div class="card-body">
+    <div class="row align-items-end">
+      <div class="col-lg-5 mb-3 mb-lg-0">
+        <label class="form-label">Tipo de Contato</label>
+        <%= f.collection_select :contact_type, 
+                               Contact.contact_types_for_select, 
+                               :last, 
+                               :first, 
+                               { include_blank: "Selecione o tipo de contato" },
+                               { class: "form-select" } %>
+      </div>
+      
+      <div class="col-lg-5 mb-3 mb-lg-0">
+        <label class="form-label">Valor</label>
+        <%= f.text_field :value, class: "form-control", placeholder: "Digite o valor do contato" %>
+      </div>
+      
+      <div class="col-lg-2 d-flex align-items-end">
+        <button type="button" 
+                class="btn btn-outline-danger w-100" 
+                data-action="nested-form#remove" 
+                title="Remover este contato">
+          <i class="fa fa-trash"></i>
+        </button>
+        
+        <%= f.hidden_field :_destroy %>
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :value, "Valor" %>
-    <%= f.text_field :value %>
-  </div>
-
-  <button type="button" data-action="nested-form#remove">Remover contato</button>
-
-  <%= f.hidden_field :_destroy %>
-
 </div>

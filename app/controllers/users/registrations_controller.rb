@@ -5,9 +5,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_account_update_params, only: [ :update ]
 
   # GET /resource/sign_up
-  # def new
-  #   super
-  # end
+  def new
+    @user = User.new
+    # Ensure that the user has at least one contact to fill in
+    @user.contacts.build
+  end
 
   # POST /resource
   # def create
@@ -26,7 +28,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user = current_user
     # If the update is successful, redirect to the user profile page
     if @user.update(user_params)
-      redirect_to user_path(@user), notice: "Perfil atualizado com sucesso!"
+      redirect_to root_path, notice: "Perfil atualizado com sucesso!"
     end
   end
 

@@ -1,0 +1,11 @@
+pt-BR:
+  activerecord:
+    errors:
+      messages:
+        blank: "não pode ficar em branco"
+        taken: "já foi utilizado"
+        invalid: "não é válido"
+        too_short: "é muito curto (mínimo de %{count} caracteres)"
+  errors:
+    messages:
+      blank: "não pode ficar em branco"

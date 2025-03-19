@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <h1>Lista de Membros</h1>
+  
+  <% if can? :manage, User %>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Função</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= "#{user.first_name} #{user.last_name}" %></td>
+              <td><%= user.email %></td>
+              <td><%= user.role %></td>
+              <td>
+                <%= link_to 'Ver', member_path(user), class: 'btn btn-sm btn-info' %>
+                <%= link_to 'Editar', edit_member_path(user), class: 'btn btn-sm btn-primary' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="alert alert-danger">
+      Você não tem permissão para acessar esta página.
+    </div>
+  <% end %>
+</div>
