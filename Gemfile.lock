@@ -74,6 +74,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+    amq-protocol (2.3.3)
     ast (2.4.2)
     autoprefixer-rails (10.4.19.0)
       execjs (~> 2)
@@ -93,6 +94,8 @@ GEM
     brakeman (7.0.0)
       racc
     builder (3.3.0)
+    bunny (2.13.0)
+      amq-protocol (~> 2.3, >= 2.3.0)
     cancancan (3.6.1)
     capybara (3.40.0)
       addressable
@@ -373,6 +376,15 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    serverengine (2.0.7)
+      sigdump (~> 0.2.2)
+    sigdump (0.2.5)
+    sneakers (2.11.0)
+      bunny (~> 2.12)
+      concurrent-ruby (~> 1.0)
+      rake
+      serverengine (~> 2.0.5)
+      thor
     solid_cable (3.0.7)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -448,6 +460,7 @@ DEPENDENCIES
   bootsnap
   bootstrap (~> 5.3.3)
   brakeman
+  bunny (~> 2.13.0)
   cancancan (~> 3.6)
   capybara
   dartsass-rails
@@ -466,6 +479,7 @@ DEPENDENCIES
   rails (~> 8.0.1)
   rubocop-rails-omakase
   selenium-webdriver
+  sneakers (~> 2.11.0)
   solid_cable
   solid_cache
   solid_queue

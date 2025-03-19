@@ -20,7 +20,8 @@ class ExamApiService
     if response.status == 200
       JSON.parse(response.body)
     else
-      puts "Erro ao buscar prova"
+      Rails.logger.error("Failed to fetch exam #{id}: HTTP #{response.status}")
+      { "success" => false, "message" => "Failed to fetch exam", "exam_id" => id }
     end
   end
 
@@ -33,7 +34,8 @@ class ExamApiService
     if response.status == 200
       JSON.parse(response.body)
     else
-      { "success" => false }
+      Rails.logger.error("Failed to submit exam #{exam_id}: HTTP #{response.status}")
+      { "success" => false, "message" => "Failed to submit exam", "exam_id" => exam_id }
     end
   end
 end

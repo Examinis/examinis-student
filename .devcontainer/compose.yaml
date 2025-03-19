@@ -31,8 +31,21 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+      services:
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    ports:
+      - "5672:5672"   # AMQP protocol
+      - "15672:15672" # Management UI
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   postgres-data:
+  rabbitmq_data:
 
 networks:
   default:
