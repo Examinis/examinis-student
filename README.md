@@ -42,6 +42,10 @@ trabalho antes que você termine de digitar tudo).
 
 ## Executando a aplicação em sua máquina
 
+1. Dica: antes de começar a executar suas aplicações, pare a instância do seu *PostgreSQL* local (
+caso haja uma) executando o comando `sudo pkill -u postgres`, visto que, em alguns momentos, ter 
+tal insância rodando resulta em um conflito de portas.
+
 1. Certifique-se de que a [API FastAPI](https://github.com/Examinis/examinis-api) está executando.
 
 1. Obtenha o IP da aplicação *FastAPI* executando o comando `docker network inspect examinis_network`.
