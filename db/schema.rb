@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_19_022459) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_19_034758) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_19_022459) do
     t.datetime "updated_at", null: false
     t.index ["contact_type"], name: "index_contacts_on_contact_type"
     t.index ["user_id"], name: "index_contacts_on_user_id"
+  end
+
+  create_table "exam_questions", force: :cascade do |t|
+    t.bigint "exam_id", null: false
+    t.bigint "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_exam_questions_on_exam_id"
+    t.index ["question_id"], name: "index_exam_questions_on_question_id"
   end
 
   create_table "exams", force: :cascade do |t|
@@ -52,10 +61,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_19_022459) do
 
   create_table "questions", force: :cascade do |t|
     t.string "text"
-    t.bigint "exam_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exam_id"], name: "index_questions_on_exam_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -87,9 +94,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_19_022459) do
   end
 
   add_foreign_key "contacts", "users"
+  add_foreign_key "exam_questions", "exams"
+  add_foreign_key "exam_questions", "questions"
   add_foreign_key "exams", "subjects"
   add_foreign_key "exams", "teachers"
   add_foreign_key "exams", "users"
   add_foreign_key "options", "questions"
-  add_foreign_key "questions", "exams"
 end

@@ -73,19 +73,19 @@ class ExamsController < ApplicationController
       )
 
       response_data["questions"].each do |question_data|
-        question = exam.questions.create!(
-          id: question_data["id"],
-          text: question_data["text"]
-        )
+        question = Question.find_or_create_by(id: question_data["id"]) do |q|
+          q.text = question_data["text"]
+        end
+
+        exam.exam_questions.find_or_create_by!(question: question)
 
         question_data["options"].each do |option_data|
-          question.options.create!(
-            id: option_data["id"],
-            description: option_data["description"],
-            letter: option_data["letter"],
-            is_correct: option_data["is_correct"],
-            selected: option_data["selected"]
-          )
+          question.options.find_or_create_by!(id: option_data["id"]) do |opt|
+            opt.description = option_data["description"]
+            opt.letter = option_data["letter"]
+            opt.is_correct = option_data["is_correct"]
+            opt.selected = option_data["selected"]
+          end
         end
       end
 
@@ -95,6 +95,8 @@ class ExamsController < ApplicationController
     Rails.logger.error "Erro ao salvar exame: #{e.message}"
     nil
   end
+
+
 
   def answered
     @answered_exams = Exam.where(user: current_user).order(answered_at: :desc)
