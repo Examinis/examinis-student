@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <h1 class="mb-4 text-center fw-bold">Exames Respondidos</h1>
+
+  <% if @answered_exams.any? %>
+    <div class="list-group">
+      <% @answered_exams.each do |exam| %>
+        <a href="<%= answered_exams_path(exam.id) %>" class="list-group-item list-group-item-action">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="mb-1"><%= exam.title %></h5>
+              <small class="text-muted">Pontuação: <%= exam.score %>%</small>
+            </div>
+            <span class="badge bg-primary"><%= exam.subject.name %></span>
+          </div>
+          <small class="text-muted">Respondido em: <%= exam.answered_at.strftime("%d/%m/%Y %H:%M") %></small>
+        </a>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center text-muted">Nenhum exame respondido ainda.</p>
+  <% end %>
+</div>
