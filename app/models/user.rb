@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   # Relationship with exams
   has_many :exams, dependent: :destroy
+  has_many :user_answers, dependent: :destroy
 
   before_create :set_default_role
 
