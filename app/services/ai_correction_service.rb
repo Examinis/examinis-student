@@ -1,21 +1,17 @@
+require_relative "rabbitmq_connection"
+
 class AiCorrectionService
   EXCHANGE_NAME = "questions.topic"
 
-  def self.submit_for_correction(exam_id, question_id, answer_data)
+  def self.submit_for_correction(payload)
+    exam_id = payload[:id_exam]
+    question_id = payload[:id_question]
+
+    self.create_request_queue
     exchange = RabbitMqConnection.questions_channel.topic(EXCHANGE_NAME, durable: true)
 
     # Routing key específica para correção de questões
-    routing_key = "question.correction.#{question_id}"
-
-    # Preparando payload com informações relevantes para a IA analisar
-    payload = {
-      exam_id: exam_id,
-      question_id: question_id,
-      student_answer: answer_data[:answer],
-      correct_answer: answer_data[:correct_answer],
-      question_text: answer_data[:question_text],
-      submitted_at: Time.current.iso8601
-    }
+    routing_key = "ai.feedback.request.#{question_id}"
 
     # Gerando um ID de correlação para rastreamento
     correlation_id = "correction-#{exam_id}-#{question_id}-#{Time.current.to_i}"
@@ -37,6 +33,19 @@ class AiCorrectionService
   rescue StandardError => e
     Rails.logger.error("Failed to send question for AI correction: #{e.message}")
     { success: false, message: "Failed to send question for AI correction" }
+  end
+
+  def self.create_request_queue
+    queue_name = "ai.feedback.requests"
+
+    channel = RabbitMqConnection.questions_channel
+    exchange = channel.topic(EXCHANGE_NAME, durable: true)
+
+    # Criando a fila para solicitações de correção
+    queue = channel.queue(queue_name, durable: true)
+    queue.bind(exchange, routing_key: "ai.feedback.request.*")
+
+    queue
   end
 
   def self.create_feedback_consumer

@@ -1,27 +1,31 @@
 class QuestionAnswersController < ApplicationController
   def request_ai_correction
-    user_answer = UserAnswer.find(params[:id])
-    correct_answer = user_answer.question.each { |q| }
+    user_answer_id = params[:user_answer]
+    user_answer = UserAnswer.find(user_answer_id)
+    question = Question.find(user_answer.question_id)
 
-    # Preparando os dados para envio
+    correct_option = question.options.find_by(is_correct: true)
+    choosen_option = Option.find(user_answer.option_id)
+
     answer_data = {
-      answer: user_answer.option.text,
-      correct_answer: user_answer.question,
-      question_text: user_answer.question.text
+      id_exam: user_answer.exam_id,
+      id_question: user_answer.question_id,
+      question_text: question.text,
+      option_escolhida: choosen_option.description,
+      option_correta: correct_option.description,
+      user_id: user_answer.user_id
     }
 
-    # Enviando para correção via AiCorrectionService
-    result = AiCorrectionService.submit_for_correction(exam_id, question_id, answer_data)
+    Rails.logger.info("Sending question for AI correction: #{answer_data}")
 
-    if result[:success]
-      puts result
-      # Atualiza o status da resposta para indicar que está em análise pela IA
-      # question_answer.update(ai_correction_requested: true,
-      #                       ai_correction_correlation_id: result[:correlation_id])
+    result = AiCorrectionService.submit_for_correction(answer_data)
 
-      # redirect_to question_answer_path(question_answer), notice: "Question sent for AI analysis"
-    else
-      redirect_to question_answer_path(question_answer), alert: "Failed to send question for AI analysis"
-    end
+    puts result
+    # if result
+    #   puts result
+    #   # redirect_to question_answer_path(question_answer), notice: "Question sent for AI analysis"
+    # else
+    #   redirect_to question_answer_path(question_answer), alert: "Failed to send question for AI analysis"
+    # end
   end
 end

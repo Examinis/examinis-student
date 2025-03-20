@@ -1,10 +1,11 @@
+require "bunny"
+
 class RabbitMqConnection
   def self.connection
     @connection ||= begin
       conn = Bunny.new(
         host: ENV.fetch("RABBITMQ_HOST", "localhost"),
         port: ENV.fetch("RABBITMQ_PORT", 5672),
-        vhost: ENV.fetch("RABBITMQ_VHOST", "/"),
         user: ENV.fetch("RABBITMQ_USER", "guest"),
         password: ENV.fetch("RABBITMQ_PASSWORD", "guest")
       )
