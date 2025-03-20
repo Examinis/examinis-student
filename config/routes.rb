@@ -7,6 +7,12 @@ Rails.application.routes.draw do
     get "answered/:id", to: "exams#answered_show", on: :collection, as: "answered_show"
   end
 
+  resources :question_answers do
+    member do
+      post :request_ai_correction
+    end
+  end
+
   devise_for :users, controllers: {
     registrations: "users/registrations"
   }

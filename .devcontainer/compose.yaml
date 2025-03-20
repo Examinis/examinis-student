@@ -21,20 +21,41 @@ services:
       - default
   
   postgres:
-    image: postgres:16.1
+    image: postgres:16.8
     restart: unless-stopped
     networks:
       - default
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      services:
+  rabbitmq:
+    container_name: examinis-rabbitmq
+    image: rabbitmq:3.11-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - default
+      - examinis_ai_network
 
 volumes:
   postgres-data:
+  rabbitmq_data:
 
 networks:
   default:
+  examinis_ai_network:
+    name: examinis_ai_network
+    driver: bridge
   examinis_network:
     external: true

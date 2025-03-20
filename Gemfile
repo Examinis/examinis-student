@@ -77,3 +77,7 @@ gem "bootstrap", "~> 5.3.3"
 gem "faraday"
 
 gem "dotenv-rails", groups: [ :development, :test ]
+
+gem "bunny", "~> 2.13.0"
+
+gem "sneakers", "~> 2.11.0"

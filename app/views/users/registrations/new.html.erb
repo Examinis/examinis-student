@@ -17,15 +17,15 @@
         <div class="row g-3">
           <div class="col-md-6">
             <div class="form-floating">
-              <%= f.text_field :first_name, autofocus: true, class: "form-control", id: "floatingFirstName", placeholder: "First name" %>
-              <%= f.label :first_name, for: "floatingFirstName" %>
+              <%= f.text_field :first_name, autofocus: true, class: "form-control", id: "floatingFirstName", placeholder: "Nome" %>
+              <%= f.label :first_name, "Nome", for: "floatingFirstName" %>
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="form-floating">
-              <%= f.text_field :last_name, class: "form-control", id: "floatingLastName", placeholder: "Last name" %>
-              <%= f.label :last_name, for: "floatingLastName" %>
+              <%= f.text_field :last_name, class: "form-control", id: "floatingLastName", placeholder: "Sobrenome" %>
+              <%= f.label :last_name, "Sobrenome", for: "floatingLastName" %>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
           <div class="col-md-6">
             <div class="form-floating">
               <%= f.password_field :password, autocomplete: "new-password", class: "form-control", id: "floatingPassword", placeholder: "Password" %>
-              <%= f.label :password, for: "floatingPassword" %>
+              <%= f.label :password, "Senha", for: "floatingPassword" %>
               <% if @minimum_password_length %>
                 <div class="form-text">No mínimo, <%= @minimum_password_length %> caracteres</div>
               <% end %>
@@ -75,13 +75,13 @@
           <div class="col-md-6">
             <div class="form-floating">
               <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", id: "floatingPasswordConfirmation", placeholder: "Password confirmation" %>
-              <%= f.label :password_confirmation, for: "floatingPasswordConfirmation" %>
+              <%= f.label :password_confirmation, "Confirmação da senha", for: "floatingPasswordConfirmation" %>
             </div>
           </div>
         </div>
 
         <div class="d-flex gap-3 mt-4">
-          <%= f.submit "Sign up", class: "btn btn-primary flex-grow-1 py-2" %>
+          <%= f.submit "Cadastrar-se", class: "btn btn-primary flex-grow-1 py-2" %>
           <%= link_to "Voltar", new_session_path(resource_name), class: "btn btn-outline-secondary flex-grow-1 py-2" %>
         </div>
       <% end %>
