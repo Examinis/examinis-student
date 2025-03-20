@@ -11,8 +11,8 @@ class QuestionAnswersController < ApplicationController
       id_exam: user_answer.exam_id,
       id_question: user_answer.question_id,
       question_text: question.text,
-      option_escolhida: choosen_option.description,
-      option_correta: correct_option.description,
+      choosen_option: choosen_option.description,
+      correct_option: correct_option.description,
       user_id: user_answer.user_id
     }
 
@@ -20,12 +20,9 @@ class QuestionAnswersController < ApplicationController
 
     result = AiCorrectionService.submit_for_correction(answer_data)
 
-    puts result
-    # if result
-    #   puts result
-    #   # redirect_to question_answer_path(question_answer), notice: "Question sent for AI analysis"
-    # else
-    #   redirect_to question_answer_path(question_answer), alert: "Failed to send question for AI analysis"
-    # end
+    Rails.logger.info("AI correction result: #{result}")
+
+    redirect_to "/exams/answered/#{user_answer.exam_id}",
+          notice: "Solicitação de revisão enviada! O feedback estará disponível em breve."
   end
 end

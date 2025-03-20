@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_19_092212) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_20_143720) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -87,6 +87,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_19_092212) do
     t.bigint "exam_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "ai_feedback"
     t.index ["exam_id"], name: "index_user_answers_on_exam_id"
     t.index ["option_id"], name: "index_user_answers_on_option_id"
     t.index ["question_id"], name: "index_user_answers_on_question_id"

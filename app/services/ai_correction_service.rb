@@ -1,7 +1,7 @@
 require_relative "rabbitmq_connection"
-
 class AiCorrectionService
   EXCHANGE_NAME = "questions.topic"
+  RESPONSE_EXCHANGE_NAME = "examinis"
 
   def self.submit_for_correction(payload)
     exam_id = payload[:id_exam]
@@ -10,10 +10,7 @@ class AiCorrectionService
     self.create_request_queue
     exchange = RabbitMqConnection.questions_channel.topic(EXCHANGE_NAME, durable: true)
 
-    # Routing key específica para correção de questões
-    routing_key = "ai.feedback.request.#{question_id}"
-
-    # Gerando um ID de correlação para rastreamento
+    routing_key = "ai.feedback.requests"
     correlation_id = "correction-#{exam_id}-#{question_id}-#{Time.current.to_i}"
 
     # Publicando a mensagem para o serviço de IA
@@ -36,44 +33,77 @@ class AiCorrectionService
   end
 
   def self.create_request_queue
+    # Cria a fila para solicitações de correção da IA
     queue_name = "ai.feedback.requests"
-
     channel = RabbitMqConnection.questions_channel
     exchange = channel.topic(EXCHANGE_NAME, durable: true)
 
-    # Criando a fila para solicitações de correção
     queue = channel.queue(queue_name, durable: true)
-    queue.bind(exchange, routing_key: "ai.feedback.request.*")
-
+    queue.bind(exchange, routing_key: "ai.feedback.requests")
     queue
   end
 
-  def self.create_feedback_consumer
+  def self.setup_feedback_consumer
+    # Inicializa o consumidor apenas se ainda não estiver ativo
+    return if @consumer_setup
+
+    channel = RabbitMqConnection.questions_channel
+    exchange = channel.topic(RESPONSE_EXCHANGE_NAME, durable: true)
+
+    # Criar uma fila para receber feedback da IA com nome específico
     queue_name = "ai.feedback.responses"
-
-    channel = RabbitMqConnection.questions_channel
-    exchange = channel.topic(EXCHANGE_NAME, durable: true)
-
-    # Criando uma fila para receber feedback da IA
     queue = channel.queue(queue_name, durable: true)
-    queue.bind(exchange, routing_key: "question.feedback.*")
 
-    queue
+    # Vincular a fila ao exchange com o padrão de routing key que o Python está usando
+    queue.bind(exchange, routing_key: "ai.feedback.response.*")
+
+    # Configurar o consumidor para processar as mensagens
+    queue.subscribe(manual_ack: false) do |delivery_info, properties, payload|
+      begin
+        data = JSON.parse(payload)
+        Rails.logger.info("Received AI feedback: #{data}")
+
+        if process_feedback(data)
+          # Confirmar processamento bem-sucedido
+          channel.acknowledge(delivery_info.delivery_tag, false)
+        else
+          # Rejeitar e recolocar na fila em caso de falha
+          channel.reject(delivery_info.delivery_tag, true)
+        end
+      rescue => e
+        Rails.logger.error("Error processing AI feedback message: #{e.message}")
+        channel.reject(delivery_info.delivery_tag, true)
+      end
+    end
+
+    @consumer_setup = true
+    Rails.logger.info("AI feedback consumer setup successfully")
   end
 
-  # Método para processar respostas de feedback da IA
+
   def self.process_feedback(payload)
-    # Implemente a lógica para processar feedback da IA
-    # Por exemplo: atualizar a resposta da questão com o feedback da IA
-    question_id = payload["question_id"]
+    question_id = payload["id_question"]
+    user_id = payload["user_id"]
     feedback = payload["feedback"]
+    exam_id = payload["id_exam"]
 
-    Rails.logger.info("Received AI feedback for question #{question_id}")
+    Rails.logger.info("Processing AI feedback for question #{question_id}, user #{user_id}")
 
-    # Adicione aqui a lógica para salvar o feedback no seu sistema
-    # QuestionAnswer.find_by(question_id: question_id)&.update(ai_feedback: feedback)
+    user_answer = UserAnswer.find_by(
+      user_id: user_id,
+      question_id: question_id,
+      exam_id: exam_id
+    )
 
-    true
+    if user_answer
+      user_answer.update(ai_feedback: feedback)
+      Rails.logger.info("Saved AI feedback for user_answer #{user_answer.id}")
+      true
+    else
+      Rails.logger.error("UserAnswer not found for user #{user_id}, question #{question_id}")
+      false
+    end
+
   rescue StandardError => e
     Rails.logger.error("Error processing AI feedback: #{e.message}")
     false

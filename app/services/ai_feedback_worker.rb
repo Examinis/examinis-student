@@ -1,7 +1,6 @@
 class AiFeedbackWorker
   include Sneakers::Worker
 
-  # Nome da fila para consumir mensagens de feedback da IA
   from_queue "ai.feedback.responses",
              exchange: "questions.topic",
              exchange_type: :topic,

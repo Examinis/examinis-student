@@ -1,4 +1,11 @@
 <div class="container mt-4">
+  <% if notice %>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+  
   <h1 class="mb-4 text-center fw-bold">Resultado da Prova</h1>
 
   <div class="card shadow border-0 p-4">
@@ -50,15 +57,24 @@
     <% end %>
 
     <% if is_incorrect_answer %>
-      <div class="mt-3">
-    <%= button_to request_ai_correction_question_answer_path(user_answer: user_answer), 
-                     method: :post, 
-                     class: "btn btn-outline-primary btn-sm",
-                     data: { turbo: true, turbo_confirm: "Solicitar revisão da IA para esta questão?" } do %>
-          <i class="bi bi-robot"></i> Solicitar revisão por IA
-        <% end %>
+  <div class="mt-3">
+    <% if user_answer.ai_feedback.present? %>
+      <div class="mt-3 p-3 border-top">
+        <h6 class="text-primary mb-2"><i class="bi bi-robot"></i> Feedback da IA:</h6>
+        <div class="bg-light p-3 rounded">
+          <%= simple_format(user_answer.ai_feedback) %>
+        </div>
       </div>
+    <% else %>
+      <%= button_to request_ai_correction_question_answer_path(user_answer: user_answer), 
+                 method: :post, 
+                 class: "btn btn-outline-primary btn-sm",
+                 data: { turbo: true, turbo_confirm: "Solicitar revisão da IA para esta questão?" } do %>
+        <i class="bi bi-robot"></i> Solicitar revisão por IA
+      <% end %>
     <% end %>
+  </div>
+<% end %>
   </div>
 <% end %>
 
